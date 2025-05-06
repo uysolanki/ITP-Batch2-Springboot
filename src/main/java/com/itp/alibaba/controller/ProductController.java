@@ -1,0 +1,42 @@
+package com.itp.alibaba.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.itp.alibaba.model.Product;
+import com.itp.alibaba.service.ProductService;
+
+@RestController
+public class ProductController {
+	
+	@Autowired
+	ProductService productService;
+
+	@PostMapping("/addProductByRequestParam")		//insert post mapping
+	public Product addProductByRequestParam(@RequestParam("prodTitle") String prodTitle,
+			@RequestParam("prodDesc") String prodDesc,
+			@RequestParam("prodCategory") String prodCategory,
+			@RequestParam("prodPrice") double prodPrice)
+	{
+		Product product=new Product();
+		product.setProductTitle(prodTitle);
+		product.setProductDesc(prodDesc);
+		product.setProductCategory(prodCategory);
+		product.setPrice(prodPrice);
+		return productService.addProduct(product);
+		//return "Product Added Successfully";
+		
+	}
+}
+
+/*
+{
+"pno": 3,
+"productTitle": "Apple Iphone 16 Pro Max",
+"productDesc": "IOS Mobile 8GB RAM 512 HDD",
+"productCategory": "Electronics",
+"price": 135000.0
+}
+*/
