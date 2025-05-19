@@ -1,6 +1,6 @@
 package com.itp.alibaba.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +8,9 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
@@ -39,12 +39,22 @@ public class Customer {
 
     private String custGender;
     
-    @CreatedDate 
-    @Column(name = "created_at") 
-    private Timestamp createdAt; 
-
-    @LastModifiedDate 
-    @Column(name = "modified_at") 
-    private Timestamp modifiedAt;
+    private LocalDateTime createdAt;
+	
+	private LocalDateTime modifiedAt;
+	
+	@PrePersist
+	protected void atCreation()
+	{
+		LocalDateTime now=LocalDateTime.now();
+		this.createdAt=now;
+		this.modifiedAt=now;
+	}
+	
+	@PreUpdate
+	protected void atUpdation()
+	{
+		this.modifiedAt=LocalDateTime.now();
+	}
 
 }
