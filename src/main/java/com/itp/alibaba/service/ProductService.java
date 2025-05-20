@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.itp.alibaba.exception.ProductNotFoundException;
+import com.itp.alibaba.model.Customer;
 import com.itp.alibaba.model.Product;
 import com.itp.alibaba.repository.ProductRepository;
 
@@ -37,6 +38,19 @@ public class ProductService {
 
 	public Page<Product> productbypages(int pageNumber, int pageSize) {
 		return productRepository.findAll(PageRequest.of(pageNumber, pageSize));
+	}
+
+	public Product updateProduct(int pid, Product newProductDetails) {
+		Product prodDB=productRepository.findById(pid).get();
+		prodDB.setPrice(newProductDetails.getPrice());
+		prodDB.setProductCategory(newProductDetails.getProductCategory());
+		prodDB.setProductDesc(newProductDetails.getProductDesc());
+		prodDB.setProductTitle(newProductDetails.getProductTitle());
+		return productRepository.save(prodDB);
+	}
+
+	public void deleteProduct(int pid) {
+		productRepository.deleteById(pid);	
 	}
 
 }

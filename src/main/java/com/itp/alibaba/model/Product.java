@@ -41,7 +41,7 @@ public class Product {
 	
 	@NotNull(message = "Price cannot be null") 
 	@Min(value = 100, message = "Price must be at least 10,000") 
-	@Max(value = 5000, message = "Price must be less than or equal to 50,000") 
+	@Max(value = 50000, message = "Price must be less than or equal to 50,000") 
 	private double price;
 	
 

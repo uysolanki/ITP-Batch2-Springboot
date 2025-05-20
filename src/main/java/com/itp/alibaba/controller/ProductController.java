@@ -5,16 +5,17 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
-	private static final Logger logger=Logger.getLogger(ProductController.class);
+	
 
 	@PostMapping("/addProductByRequestParam")		//insert post mapping
 	public Product addProductByRequestParam(@RequestParam("prodTitle") String prodTitle,
@@ -84,7 +85,6 @@ public class ProductController {
 	@PostMapping("/addProductByRequestBody")		//insert post mapping
 	public ResponseEntity<?> addProductByRequestBody(@RequestBody @Valid Product product,BindingResult bindingResult)
 	{
-		logger.info("Request received for adding product " + product.getProductTitle());
 		 if (bindingResult.hasErrors()) 
 			{
 			 List<ValidError> errors = new ArrayList<>();
@@ -122,22 +122,18 @@ public class ProductController {
 		return products;
 	}
 	
-	@GetMapping("/try1")		//insert post mapping
-	public ResponseEntity<?> test()
+	@PutMapping("/updateProduct/{pid}")
+	public ResponseEntity<Product> updateProduct(@PathVariable int pid,@RequestBody Product newProductDetails)
 	{
-		int n=9;
-		if(n%2==0)
-		{
-			return new ResponseEntity<Integer>(101,HttpStatus.OK);
-		}
-		else
-		{
-			return new ResponseEntity<String>("Test",HttpStatus.OK);
-		}
+		return new ResponseEntity<Product>(productService.updateProduct(pid,newProductDetails),HttpStatus.CREATED);
 	}
 	
-	
-	
+	@DeleteMapping("/deleteProduct/{pid}")		//insert post mapping
+	public ResponseEntity<String> deleteProduct(@PathVariable int pid)
+	{
+		productService.deleteProduct(pid);
+		return new ResponseEntity<String>("Record Deleted",HttpStatus.FOUND);
+	}
 }
 
 /*
