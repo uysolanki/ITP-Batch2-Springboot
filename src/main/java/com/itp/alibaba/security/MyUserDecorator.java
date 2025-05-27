@@ -1,5 +1,6 @@
 package com.itp.alibaba.security;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,22 +45,40 @@ public class MyUserDecorator implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		LocalDate accountExpiryDate=user.getAccountExpiryDate();
+		LocalDate todaysDate=LocalDate.now();
+		if(accountExpiryDate.isAfter(todaysDate))
+			return true;
+		else
+			return false;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		int accLockedStatus=user.getAccountLockedStatus();
+		if(accLockedStatus==1)
+			return true;
+		else
+			return false;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
+		LocalDate credentialsExpiryDate=user.getCredentialsExpiryDate();
+		LocalDate todaysDate=LocalDate.now();
+		if(credentialsExpiryDate.isAfter(todaysDate))
+			return true;
+		else
+			return false;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		int accEnabledStatus=user.getAccountEnabledStatus();
+		if(accEnabledStatus==1)
+			return true;
+		else
+			return false;
 	}
 
 }

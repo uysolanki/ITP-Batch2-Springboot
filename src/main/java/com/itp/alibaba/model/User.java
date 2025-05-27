@@ -1,5 +1,6 @@
 package com.itp.alibaba.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,11 @@ public class User {
 	private int userid;
 	private String username;
 	private String password;
+	
+	private LocalDate accountExpiryDate;
+	private int accountLockedStatus;
+	private LocalDate credentialsExpiryDate;
+	private int accountEnabledStatus;
 	
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(
